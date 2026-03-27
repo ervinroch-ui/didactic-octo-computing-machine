@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIOPSA APP</title>
+
+<style>
+/* FUENTE */
+@font-face{
+    font-family:winter;
+    src:url("WinterSunday.ttf");
+}
+
+/* GENERAL */
+body{
+    margin:0;
+    font-family:winter, Arial;
+    background:linear-gradient(120deg,#001f3f,#000,#0b3d91);
+    background-size:400% 400%;
+    animation:fondo 10s infinite alternate;
+    color:white;
+}
+
+@keyframes fondo{
+    0%{background-position:0%}
+    100%{background-position:100%}
+}
+
+/* PANTALLAS */
+.pantalla{
+    display:none;
+    min-height:100vh;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.activa{
+    display:block;
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+}
+
+.logo{
+    width:90px;
+}
+
+/* BOTONES */
+.btn{
+    display:block;
+    width:90%;
+    max-width:320px;
+    margin:10px auto;
+    padding:15px;
+    font-size:18px;
+    border:none;
+    background:#1976d2;
+    color:white;
+    border-radius:10px;
+}
+
+/* TARJETAS */
+.card{
+    background:#111;
+    border:2px solid #2196f3;
+    margin:15px auto;
+    padding:10px;
+    border-radius:10px;
+    max-width:320px;
+    text-align:center;
+}
+
+.card img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+}
+
+/* INPUTS */
+input, textarea{
+    width:90%;
+    max-width:320px;
+    padding:12px;
+    margin:5px auto;
+    display:block;
+    border:none;
+    border-radius:5px;
+    font-family:winter;
+}
+
+/* FORMULARIO */
+#form{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    display:none;
+    z-index:1000;
+    overflow:auto;
+    padding:20px;
+    box-sizing:border-box;
+}
+</style>
+</head>
+<body>
+
+<!-- REGISTRO -->
+<div id="registro" class="pantalla activa">
+    <div class="header">
+        <img src="logo.png" class="logo">
+        <h2>ELIOPSA</h2>
+    </div>
+    <input id="nombre" placeholder="Nombre">
+    <input id="correo" placeholder="Correo">
+    <button class="btn" id="btnEntrar">Entrar</button>
+    <p id="msg"></p>
+</div>
+
+<!-- INICIO -->
+<div id="inicio" class="pantalla">
+    <div class="header">
+        <h2>ELIOPSA</h2>
+    </div>
+    <button class="btn" id="btnProductos">PRODUCTOS</button>
+    <button class="btn" id="btnAsesorias">ASESORÍAS</button>
+
+    <p style="text-align:center; margin-top:20px;">
+        Empresa de ingeniería civil, construcción, asesorías y materiales.<br><br>
+        📍 Managua<br>
+        📞 8888-8888<br>
+        📧 eliopsa@gmail.com
+    </p>
+</div>
+
+<!-- PRODUCTOS -->
+<div id="productos" class="pantalla">
+    <button class="btn" id="btnVolverProd">⬅ Volver</button>
+    <h2>Productos</h2>
+
+    <div class="card">
+        <img src="cemento.jpg">
+        <p>Cemento</p>
+        <button class="btn" data-producto="Cemento">Pedir</button>
+    </div>
+
+    <div class="card">
+        <img src="varilla.jpg">
+        <p>Varilla</p>
+        <button class="btn" data-producto="Varilla">Pedir</button>
+    </div>
+
+    <div class="card">
+        <img src="bloques.jpg">
+        <p>Bloques</p>
+        <button class="btn" data-producto="Bloques">Pedir</button>
+    </div>
+</div>
+
+<!-- ASESORIAS -->
+<div id="asesorias" class="pantalla">
+    <button class="btn" id="btnVolverAses">⬅ Volver</button>
+    <h2>Asesorías</h2>
+
+    <div class="card">
+        <img src="planos.jpg">
+        <p>Planos</p>
+        <button class="btn" data-producto="Planos">Solicitar</button>
+    </div>
+
+    <div class="card">
+        <img src="planos.jpg">
+        <p>Supervisión</p>
+        <button class="btn" data-producto="Supervisión">Solicitar</button>
+    </div>
+</div>
+
+<!-- FORMULARIO -->
+<div id="form">
+    <h2 id="titulo"></h2>
+    <input id="cantidad" placeholder="Cantidad">
+    <input id="nom" placeholder="Nombre completo">
+    <input id="cor" placeholder="Correo">
+    <input id="tel" placeholder="Teléfono">
+    <input id="dir" placeholder="Dirección">
+    <input id="ced" placeholder="Cédula">
+    <input id="emp" placeholder="Empresa / Proyecto">
+    <textarea id="det" placeholder="Detalles"></textarea>
+    <button class="btn" id="btnEnviar">Enviar</button>
+    <button class="btn" id="btnCerrar">Cerrar</button>
+    <p id="msgForm"></p>
+</div>
+
+<script>
+// FUNCIONES COMUNES
+function mostrarPantalla(id){
+    document.querySelectorAll(".pantalla").forEach(p => p.classList.remove("activa"));
+    document.getElementById(id).classList.add("activa");
+}
+
+// LOGIN FUNCIONAL EN MÓVIL
+document.getElementById("btnEntrar").addEventListener("click", function(){
+    let nombre = document.getElementById("nombre").value.trim();
+    let correo = document.getElementById("correo").value.trim();
+    let msg = document.getElementById("msg");
+    if(nombre=="" || correo==""){
+        msg.innerText = "Completa los datos";
+        return;
+    }
+    mostrarPantalla("inicio");
+});
+
+// BOTONES INICIO
+document.getElementById("btnProductos").addEventListener("click", function(){
+    mostrarPantalla("productos");
+});
+document.getElementById("btnAsesorias").addEventListener("click", function(){
+    mostrarPantalla("asesorias");
+});
+
+// VOLVER
+document.getElementById("btnVolverProd").addEventListener("click", function(){
+    mostrarPantalla("inicio");
+});
+document.getElementById("btnVolverAses").addEventListener("click", function(){
+    mostrarPantalla("inicio");
+});
+
+// ABRIR FORMULARIO PEDIDO
+document.querySelectorAll("[data-producto]").forEach(btn=>{
+    btn.addEventListener("click", function(){
+        document.getElementById("titulo").innerText = "Pedido: "+btn.getAttribute("data-producto");
+        document.getElementById("form").style.display = "block";
+    });
+});
+
+// CERRAR FORMULARIO
+document.getElementById("btnCerrar").addEventListener("click", function(){
+    document.getElementById("form").style.display="none";
+    document.getElementById("msgForm").innerText="";
+});
+
+// ENVIAR FORMULARIO
+document.getElementById("btnEnviar").addEventListener("click", function(){
+    let cantidad = document.getElementById("cantidad").value.trim();
+    let nom = document.getElementById("nom").value.trim();
+    let cor = document.getElementById("cor").value.trim();
+    let tel = document.getElementById("tel").value.trim();
+    let dir = document.getElementById("dir").value.trim();
+    let ced = document.getElementById("ced").value.trim();
+    let emp = document.getElementById("emp").value.trim();
+    let det = document.getElementById("det").value.trim();
+    let msgForm = document.getElementById("msgForm");
+
+    if(cantidad=="" || nom=="" || cor=="" || tel=="" || dir=="" || ced=="" || emp=="" || det==""){
+        msgForm.innerText="Completa todos los campos";
+        return;
+    }
+    msgForm.innerText="Pedido enviado correctamente ✔";
+});
+</script>
+
+</body>
+</html>
